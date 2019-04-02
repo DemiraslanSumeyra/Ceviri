@@ -1,0 +1,123 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <title>Dictionary</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    @* @Style.Render("/Content/css") /appstar klasörü bundle'ın içindeki isimin aynısı olmak zorunda*@
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*<a class="navbar-brand" href="#">Login dropdown</a>*@
+                @Html.ActionLink("Dictionary", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        @*<a href="#">Link</a>*@
+                        @Html.ActionLink("About", "About", "Home")
+                    </li>
+                    <li>
+                        @*<a href="#">Link</a>*@
+                        @Html.ActionLink("Contact", "Contact", "Home")
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown yazi">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Special for me <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    @*<a href="#">Action</a>*@
+                                    @Html.ActionLink("My Account", "MyAccount", "Members")
+                                </li>
+                                <li>
+                                    @*<a href="#">Another action</a>*@
+                                    @Html.ActionLink("Change your password", "ChangePass", "Members")
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    @*<a href="#">Separated link</a>*@
+                                    @Html.ActionLink("Word Requests", "Index", "WordRequests")
+                                </li>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li class="divider"></li>
+                                    <li>
+                                        @Html.ActionLink("Word", "Index", "Words")
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        @Html.ActionLink("Add new word", "Create", "Words")
+                                    </li>
+                                }
+
+                            </ul>
+                        </li>
+                    }
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <p class="navbar-text"> Merhaba @User.Identity.Name</p>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Log Off", "LogOff", "Members")
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <p class="navbar-text">Already have an account?</p>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+                            <ul id="login-dp" class="dropdown-menu">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Login via
+                                            <div class="social-buttons">
+                                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                                <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                                            </div>
+                                            or
+                                            @Html.Action("_LoginModal", "Members")
+                                        </div>
+                                        <div class="bottom text-center">
+                                            New here ?
+                                            @*<a href="#">
+                                                <b>Join Us</b></a>*@
+                                            @Html.ActionLink("Join Us", "Register", "Members", null, new { @class = "bold" })
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    @RenderBody()
+    @RenderSection("Scripts", false)
+</body>
+</html>

@@ -1,0 +1,100 @@
+﻿
+<style>
+    .pass_show {
+        position: relative
+    }
+
+        .pass_show .ptxt {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            z-index: 1;
+            color: #f36c01;
+            margin-top: -10px;
+            cursor: pointer;
+            transition: .3s ease all;
+        }
+
+            .pass_show .ptxt:hover {
+                color: #333333;
+            }
+</style>
+@using (Html.BeginForm("ChangePass","Members",FormMethod.Post,new { @onsubmit="control()"}))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                @if (ViewBag.Success != null && ViewBag.Success)
+                {
+                    <div class="alert alert-success">
+                        Your password has been changed.
+                    </div>
+                }
+                @if (ViewBag.WrongPass != null && ViewBag.WrongPass)
+                {
+                    <div class="alert alert-danger">
+                        Check your password again.
+                    </div>
+                }
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        @foreach (string item in ViewBag.Error)
+                        {
+                            @item <br />
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+
+                @Html.Label("Current Password")
+                <div class="form-group pass_show">
+                    @Html.TextBox("oldp", null, new { @class = "form-control", @type = "password", @placeholder = "Currunt Password" })
+                </div>
+                @*<label>New Password</label>*@
+                @Html.Label("New Password")
+                <div class="form-group pass_show">
+                    @*<input type="password" value="faisal.khan@123" class="form-control" placeholder="New Password">*@
+                    @Html.TextBox("newp", null, new { @class = "form-control", @type = "password", @placeholder = "New Password" })
+                </div>
+                @*<label>Confirm Password</label>*@
+                @Html.Label("Confirm Password")
+                <div class="form-group pass_show">
+                    @*<input type="password" value="faisal.khan@123" class="form-control" placeholder="Confirm Password">*@
+                    @Html.TextBox("again", null, new { @class = "form-control", @type = "password", @placeholder = "Confirm Password" })
+                </div>
+                <button class="btn btn-primary">Save</button>
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function control(e) {
+
+        var _new = $("input[name ='newp']").val();
+        var _again = $("input[name='again']").val();
+        if (_new != _again) {
+            alert("Passwords did not match");
+            e.preventDefault();
+        }
+        return _new == _again;
+    }
+
+    $(document).ready(function () {
+        $('.pass_show').append('<span class="ptxt">Show</span>');
+    });
+
+
+    $(document).on('click', '.pass_show .ptxt', function () {
+
+        $(this).text($(this).text() == "Show" ? "Hide" : "Show");
+
+        $(this).prev().attr('type', function (index, attr) { return attr == 'password' ? 'text' : 'password'; });
+
+    });
+</script>

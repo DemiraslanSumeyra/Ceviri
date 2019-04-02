@@ -1,0 +1,45 @@
+﻿@using Entity
+@using Microsoft.AspNet.Identity
+@model List<Word>
+    <style>
+        table{background-color:azure;}
+    </style>
+<div class="container wordindex">
+    @using (Html.BeginForm())
+    {
+        <div class="form-group col-md-4">
+
+            @Html.DropDownList("LanguageID", (IEnumerable<SelectListItem>)ViewData["LangOptions"], new { @class = "form-control" })
+
+        </div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Words</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.WordTxt</td>
+                        <td>
+                            @*<a href="?sil=@item.ID">Sil</a>*@
+                            @Html.ActionLink("Delete", "Index", "Words", new { @sil = item.ID}, new { @class = "btn btn-danger" })
+
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+</div>
+@section Scripts{
+    <script>
+        $("#LanguageID").change(function () {
+            $(".wordindex form").submit();
+        });
+    </script>
+    }
